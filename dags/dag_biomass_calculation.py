@@ -10,9 +10,9 @@ default_args = {
     'retries': 1,
 }
 
-def execute_querty_from_gcs(query_gcs_path):
+def execute_query_from_gcs(task_id, query_gcs_path):
     return BigQueryOperator(
-        task_id='execute_bigquery_query_from_gcs',
+        task_id=task_id,
         sql=query_gcs_path,
         gcp_conn_id='google_cloud_default',
         write_disposition='WRITE_TRUNCATE'
@@ -35,7 +35,8 @@ with DAG(
         log_response=True,
     )
 
-    rw_to_td_execute_query = execute_querty_from_gcs(
+    rw_to_td_execute_query = execute_query_from_gcs(
+        task_id='001_total_sales_execute_query',
         query_gcs_path="gs://your-gcs-bucket/path/to/your_query.sql"
     )
 
