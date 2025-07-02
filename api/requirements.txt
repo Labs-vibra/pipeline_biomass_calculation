@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+papermill
+ipykernel
+BeautifulSoup4
+pandas
+requests
+google-cloud-bigquery
+google-cloud-storage
+papermill[gcs]

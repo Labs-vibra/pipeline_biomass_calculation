@@ -1,0 +1,43 @@
+================================================================
+test local
+================================================================
+
+insert env of google cloud
+export GOOGLE_APPLICATION_CREDENTIALS="path to your service account key file"
+export NOTEBOOK_GCS_URI="gs://your-bucket-name/path/to/notebook.ipynb"
+
+================================================================
+OPTIONAL: if you want to use a different output notebook name
+================================================================
+
+export NOTEBOOK_OUTPUT_GCS_URL="gs://your-bucket-name/path/to/output_notebook.ipynb"
+
+================================================================
+build the docker image
+================================================================
+
+docker build -t test-local .
+
+run the docker image
+docker run -p 8000:8000 -e NOTEBOOK_GCS_URI=$NOTEBOOK_GCS_URI -e NOTEBOOK_OUTPUT_GCS_URL=$NOTEBOOK_OUTPUT_GCS_URL test-local
+docker run -p 8000:8000 -e NOTEBOOK_GCS_URI="gs://anp-tests-biomass-calc/teste.ipynb" test-local
+
+================================================================
+configuration to GCP
+================================================================
+
+gcloud auth configure-docker
+
+
+================================================================
+or configure on specific region
+================================================================
+
+gcloud auth configure-docker us-central1-docker.pkg.dev
+
+================================================================
+build to gcp
+================================================================
+
+docker build -t gcr.io/labs-vibra/testregistry .
+docker push gcr.io/labs-vibra/testregistry
