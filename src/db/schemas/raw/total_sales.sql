@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS `named-embassy-456813-f3`.rw_ext_anp;
+
 
 CREATE TABLE IF NOT EXISTS `named-embassy-456813-f3`.rw_ext_anp.total_sales (
     date DATE,
