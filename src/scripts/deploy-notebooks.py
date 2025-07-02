@@ -4,7 +4,7 @@ from google.cloud import storage
 
 try:
     BUCKET_NAME = "your-bucket-name"  # Replace with your VIBRA BUCKET_NAME
-    BUCKET_FILE_PATH = f"data/notebooks/"
+    BUCKET_FILE_PATH = f"src/notebooks/"
     DEST_DIR = "./dist/"
 
     COMMAND_GET_ALL_NOTEBOOKS = "find notebooks -name '*.ipynb'"
