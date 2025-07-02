@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE `named-embassy-456813-f3.td_ext_biomass_calculation.td_ext_anp_total_sales`
+CREATE OR REPLACE TABLE td_ext_biomass_calculation.td_ext_anp_total_sales
 PARTITION BY DATE(date)
 AS
 SELECT
@@ -14,7 +14,7 @@ SELECT
   	product_name,
   	EXTRACT(MONTH FROM DATE(date)) AS month
 FROM
-	`named-embassy-456813-f3.rw_ext_biomass_calculation.rw_ext_anp_total_sales`
+	rw_ext_biomass_calculation.rw_ext_anp_total_sales
 WHERE
   	product LIKE '%DIESEL B%'
   	AND NOT (
