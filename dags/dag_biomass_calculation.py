@@ -6,7 +6,7 @@ from airflow.providers.google.cloud.operators.bigquery import BigQueryOperator
 # Define default arguments for the DAG
 default_args = {
     'owner': 'airflow',
-    'start_date': days_ago(1), # This DAG will start from yesterday
+    'start_date': days_ago(1),
     'retries': 1,
 }
 
