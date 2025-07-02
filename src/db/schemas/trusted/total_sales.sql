@@ -1,6 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS `named-embassy-456813-f3`.td_ext_anp;
-
-CREATE TABLE IF NOT EXISTS `named-embassy-456813-f3`.td_ext_anp.total_sales (
+CREATE TABLE IF NOT EXISTS td_ext_anp.total_sales (
     date DATE,
     company_name STRING,
     company_base_cnpj STRING,

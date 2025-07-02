@@ -1,6 +1,4 @@
-
-
-CREATE TABLE IF NOT EXISTS `named-embassy-456813-f3`.rw_ext_anp.total_sales (
+CREATE TABLE IF NOT EXISTS rw_ext_anp.total_sales (
     date DATE,
     month INT64,
     company_name STRING,
