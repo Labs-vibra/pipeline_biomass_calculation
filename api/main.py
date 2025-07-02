@@ -14,7 +14,7 @@ def entrypoint():
     notebook_output_path = notebook_gcs_uri.replace(notebook_name, f"output/{output_formatted_name}")
     pm.execute_notebook(notebook_gcs_uri, notebook_output_path)
     return {
-        "message": "Notebook executado com sucesso no GCS",
+        "message": "notebook executed successfully",
         "input_notebook_uri": notebook_gcs_uri,
         "output_notebook_uri": notebook_output_path,
         "status": 200,
