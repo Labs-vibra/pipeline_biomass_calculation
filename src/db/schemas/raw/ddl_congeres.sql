@@ -1,10 +1,10 @@
-CREATE TABLE IF NOT EXISTS rw_ext_anp.congeneres_sales (
-    date DATE,
-    product STRING,
-    `from` STRING,
-    destination STRING,
-    seller STRING,
-    buyer STRING,
-    volume_m3 FLOAT64,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
-) PARTITION BY DATE(created_at);
+CREATE TABLE IF NOT EXISTS rw_ext_anp.venda_congeneres (
+    cgnrs_dt_venda DATE,
+    cgnrs_txt_produto STRING,
+    cgnrs_txt_origem STRING,
+    cgnrs_txt_destino STRING,
+    cgnrs_txt_vendedor STRING,
+    cgnrs_txt_comprador STRING,
+    cgnrs_qtd_volume_1000m3 FLOAT64
+    cgnrs_dt_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+) PARTITION BY DATE(cgnrs_dt_criacao);
