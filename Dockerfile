@@ -10,7 +10,8 @@ COPY gcp.secrets.json .
 ENV GOOGLE_APPLICATION_CREDENTIALS="/app/gcp.secrets.json"
 
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    mkdir /app/notebooks/output
 
 EXPOSE 8080
 
