@@ -1,1 +1,1 @@
-CREATE SCHEMA IF NOT EXISTS `named-embassy-456813-f3`.rw_ext_anp;
+CREATE SCHEMA IF NOT EXISTS rw_ext_anp;

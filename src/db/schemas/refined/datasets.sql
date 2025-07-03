@@ -1,1 +1,1 @@
-CREATE SCHEMA IF NOT EXISTS `named-embassy-456813-f3`.rf_ext_biomass_calculation;
+CREATE SCHEMA IF NOT EXISTS rf_ext_anp;
