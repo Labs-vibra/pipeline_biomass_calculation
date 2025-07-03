@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS td_ext_anp.td_ext_anp_congeneres_sales (
+CREATE TABLE IF NOT EXISTS td_ext_anp.congeneres_sales (
     date DATE,
     product STRING,
     `from` STRING,

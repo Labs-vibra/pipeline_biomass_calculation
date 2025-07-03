@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS rw_ext_anp.rw_ext_anp_b100_sales (
+CREATE TABLE IF NOT EXISTS rw_ext_anp.b100_sales (
     date DATE,
     company_base_cnpj STRING,
     company_name STRING,
