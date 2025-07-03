@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS rw_ext_anp.venda_b100 (
-    b100s_dt_compra DATE,
-    b100s_txt_cnpj STRING,
-    b100s_txt_razao_social STRING,
-    b100s_qtd_volume FLOAT64,
-    b100s_txt_produtor STRING,
-    b100s_txt_produtor_cnpj STRING,
-    b100s_dt_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
-) PARTITION BY DATE(b100s_dt_criacao);
+    vb100_dt_compra DATE,
+    vb100_txt_cnpj STRING,
+    vb100_txt_razao_social STRING,
+    vb100_qtd_volume FLOAT64,
+    vb100_txt_produtor STRING,
+    vb100_txt_produtor_cnpj STRING,
+    vb100_dt_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+) PARTITION BY DATE(vb100_dt_criacao);

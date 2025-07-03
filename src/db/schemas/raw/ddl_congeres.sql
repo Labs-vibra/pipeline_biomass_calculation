@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS rw_ext_anp.venda_congeneres (
     cgnrs_txt_destino STRING,
     cgnrs_txt_vendedor STRING,
     cgnrs_txt_comprador STRING,
-    cgnrs_qtd_volume_1000m3 FLOAT64
+    cgnrs_qtd_volume_1000m3 FLOAT64,
     cgnrs_dt_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 ) PARTITION BY DATE(cgnrs_dt_criacao);
