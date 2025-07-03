@@ -1,1 +1,9 @@
+main.py
+gcp.secrets.json
+.env
+pyproject.toml
+README.md
+uv.lock
+.venv
+.python-version
 gcp.secrets.json
