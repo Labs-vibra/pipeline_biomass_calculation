@@ -2,7 +2,7 @@ build-docker:
 	docker build -t run-notebook-api ./api
 
 run-docker-local:
-	docker run -p 8000:8000 -e NOTEBOOK_GCS_URI="gs://anp-tests-biomass-calc/teste.ipynb" run-notebook-api
+	docker run -p 8000:8000 -e NOTEBOOK_GCS_URI="./notebooks/rw_ext_anp_b100_sales.ipynb" run-notebook-api
 
 configure-docker-gcp:
 	gcloud auth configure-docker
