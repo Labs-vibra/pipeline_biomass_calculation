@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS rf_ext_anp.anp_biomass_calculation (
+CREATE TABLE IF NOT EXISTS rf_ext_anp.biomass_calculation (
     id INT64,
     date DATE,
     cnpj STRING,
