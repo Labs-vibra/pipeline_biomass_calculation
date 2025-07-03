@@ -5,7 +5,7 @@ build-docker-local:
 	docker build -t run-notebook-api .
 
 run-docker-local: build-docker-local
-	docker run -p 8000:8000 -e NOTEBOOK_GCS_URI="./notebooks/rw_ext_anp_total_sales.ipynb" run-notebook-api
+	docker run -p 8080:8080 -e NOTEBOOK_GCS_URI="./notebooks/rw_ext_anp_total_sales.ipynb" run-notebook-api
 
 configure-docker-gcp:
 	gcloud auth configure-docker
