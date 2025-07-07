@@ -9,5 +9,8 @@ CREATE TABLE IF NOT EXISTS rw_ext_anp.venda_total (
     vtot_txt_origem_estado STRING,
     vtot_txt_destino_regiao STRING,
     vtot_txt_destino_estado STRING,
+    vtot_txt_mercado_destino STRING,
+    vtot_txt_codigo_produto STRING,
+    vtot_txt_nome_produto STRING,
     vtot_dt_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
 ) PARTITION BY DATE(vtot_dt_criacao);
