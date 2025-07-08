@@ -4,7 +4,7 @@ resource "google_storage_bucket" "anp_bucket_etl" {
   force_destroy = true
 }
 
-resource "google_artifact_registry_repository" "teste_repo" {
+resource "google_artifact_registry_repository" "anp_repo_etl" {
     repository_id     = "anp-repo-etl"
     location = var.region
     format   = "DOCKER"
@@ -58,6 +58,7 @@ resource "google_cloud_run_v2_job" "anp_vendas_total_job" {
         }
     }
 }
+
 resource "google_cloud_run_v2_job" "anp_vendas_congeneres" {
     name     = "anp-vendas-congeneres-job"
     location = var.region
