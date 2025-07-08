@@ -1,10 +1,17 @@
 build-docker:
 	docker build -t run-notebook-api .
 
-run-docker: build-docker
+build-docker-dev:
+	docker build -f Dockerfile.dev -t run-notebook-api-dev .
+
+run-docker-dev:
 	docker run \
 	-e NOTEBOOK_URI="./notebooks/rw_ext_anp_total_sales.ipynb" \
-	-e GOOGLE_APPLICATION_CREDENTIALS="/app/gcp.secrets.json" \
+	run-notebook-api-dev
+
+run-docker:
+	docker run \
+	-e NOTEBOOK_URI="./notebooks/rw_ext_anp_total_sales.ipynb" \
 	run-notebook-api
 
 configure-docker-gcp:
