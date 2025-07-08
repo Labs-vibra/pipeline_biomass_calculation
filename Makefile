@@ -11,7 +11,7 @@ run-docker-dev:
 
 run-docker:
 	docker run \
-	-e NOTEBOOK_URI="./notebooks/rw_ext_anp_total_sales.ipynb" \
+	-e NOTEBOOK_URI="./notebooks/rw_ext_anp_congeneres_sales.ipynb" \
 	run-notebook-api
 
 configure-docker-gcp:
