@@ -7,7 +7,7 @@ USING (
     vb100_qtd_volume / 1000 AS vb100_qtd_volume_1000m3,
     vb100_txt_produtor,
     vb100_txt_produtor_cnpj,
-    EXTRACT(MONTH FROM DATE(date)) AS month
+    MONTH(date) AS month
     FROM rw_ext_anp.venda_b100
     WHERE vb100_dt_compra BETWEEN DATE('{{start_date}}') AND DATE('{{end_date}}')
 ) AS s
