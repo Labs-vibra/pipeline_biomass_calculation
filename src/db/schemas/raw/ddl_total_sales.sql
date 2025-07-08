@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS rw_ext_anp.venda_total (
     veto_txt_razao_social STRING,
     veto_txt_base_cnpj STRING,
     veto_txt_nome_produtor STRING,
-    veto_qtd_volume_1000m3 FLOAT64,
+    veto_qtd_volume_1000m3 FLOAT,
     veto_txt_produto STRING,
     veto_txt_origem_regiao STRING,
     veto_txt_origem_estado STRING,
