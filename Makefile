@@ -21,3 +21,9 @@ configure-docker-gcp:
 upload-docker:
 	docker build -t us-central1-docker.pkg.dev/labs-vibra/anp-repo-etl/run-notebook-api:latest .
 	docker push us-central1-docker.pkg.dev/labs-vibra/anp-repo-etl/run-notebook-api:latest
+
+create-venv:
+	python3 -m venv .venv
+
+install-requirements:
+	.venv/bin/pip install -r requirements.txt
