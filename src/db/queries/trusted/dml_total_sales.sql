@@ -4,7 +4,7 @@ USING (
     veto_dat_venda,
     veto_txt_razao_social,
     veto_txt_produto,
-    CAST(REPLACE(veto_qtd_volume_1000m3, ',', '.') AS FLOAT64) AS veto_qtd_volume_1000m3,
+    SUM(veto_qtd_volume_1000m3) AS veto_qtd_volume_1000m3,
     veto_txt_mercado_destino,
     veto_txt_destino_estado,
 	veto_txt_origem_regiao,
@@ -12,17 +12,27 @@ USING (
 	veto_txt_destino_regiao,
     veto_txt_nome_produto,
     veto_txt_codigo_produto,
-    EXTRACT(MONTH FROM DATE(veto_dat_venda)) AS month
   FROM
     rw_ext_anp.venda_total
   WHERE
     veto_txt_produto LIKE '%DIESEL B%'
     AND NOT (
-      LOWER(veto_txt_produto) LIKE '%diesel b20%'
-      OR LOWER(veto_txt_produto) LIKE '%diesel b15%'
+      LOWER(veto_txt_produto) LIKE '%diesel b15%'
       OR LOWER(veto_txt_produto) LIKE '%diesel b2%'
     )
     AND veto_dat_venda >= {{start_date}} AND veto_dat_venda <= {{end_date}}
+	-- AND veto_dat_venda >= "2024-01-01" AND veto_dat_venda <= "2024-12-01"
+	GROUP BY
+	veto_dat_venda,
+	veto_txt_razao_social,
+	veto_txt_produto,
+	veto_txt_mercado_destino,
+	veto_txt_destino_estado,
+	veto_txt_origem_regiao,
+	veto_txt_origem_estado,
+	veto_txt_destino_regiao,
+	veto_txt_nome_produto,
+	veto_txt_codigo_produto
 ) AS source
 ON target.veto_dat_venda = source.veto_dat_venda 
    AND target.veto_txt_razao_social = source.veto_txt_razao_social 
@@ -58,5 +68,5 @@ WHEN NOT MATCHED THEN
     source.veto_txt_origem_estado,
     source.veto_txt_destino_regiao,
     source.veto_txt_nome_produto,
-    CAST(source.veto_txt_codigo_produto AS STRING)
+    source.veto_txt_codigo_produto
   );
