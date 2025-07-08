@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.utils.dates import days_ago
-from airflow.providers.google.cloud.operators.bigquery import BigQueryOperator
+from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 
 # Define default arguments for the DAG
 default_args = {
@@ -11,11 +11,14 @@ default_args = {
 }
 
 def execute_query_from_gcs(task_id, query_gcs_path):
-    return BigQueryOperator(
+    return BigQueryInsertJobOperator(
         task_id=task_id,
-        sql=query_gcs_path,
-        gcp_conn_id='google_cloud_default',
-        write_disposition='WRITE_TRUNCATE'
+        configuration={
+            "query": {
+                "query": query_gcs_path,
+                "useLegacySql": False,
+            }
+        },
     )
 
 with DAG(
