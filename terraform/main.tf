@@ -84,7 +84,7 @@ resource "google_cloud_run_v2_job" "anp_vendas_congeneres" {
 }
 
 resource "google_composer_environment" "anp_composer" {
-    name   = "anp-composer"
+    name   = "ext-anp-composer"
     region = var.region
     project = var.project_id
 
