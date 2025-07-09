@@ -1,3 +1,5 @@
+PROJECT_ID ?= named-embassy-456813-f3
+
 build-docker:
 	docker build -t run-notebook-api .
 
@@ -16,11 +18,10 @@ run-docker:
 
 configure-docker-gcp:
 	gcloud auth configure-docker
-	gcloud config set project labs-vibra
 
 upload-docker:
-	docker build -t us-central1-docker.pkg.dev/labs-vibra/anp-repo-etl/run-notebook-api:latest .
-	docker push us-central1-docker.pkg.dev/labs-vibra/anp-repo-etl/run-notebook-api:latest
+	docker build -t us-central1-docker.pkg.dev/$(PROJECT_ID)/anp-repo-etl/run-notebook-api:latest .
+	docker push us-central1-docker.pkg.dev/$(PROJECT_ID)/anp-repo-etl/run-notebook-api:latest
 
 create-venv:
 	python3 -m venv .venv
