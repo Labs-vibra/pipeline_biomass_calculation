@@ -8,7 +8,7 @@ USING (
     vb100_txt_produtor,
     vb100_txt_produtor_cnpj,
     FROM rw_ext_anp.venda_b100
-    WHERE vb100_dt_compra BETWEEN DATE('{{start_date}}') AND DATE('{{end_date}}')
+    WHERE vb100_dt_compra BETWEEN DATE('{{params.start_date}}') AND DATE('{{params.end_date}}')
 ) AS s
 ON
   t.vb100_dt_compra = s.vb100_dt_compra AND
