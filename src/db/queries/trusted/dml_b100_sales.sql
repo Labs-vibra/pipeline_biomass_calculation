@@ -1,14 +1,14 @@
 MERGE INTO `td_ext_anp.venda_b100` AS t
 USING (
     SELECT
-    DATE(vb100_dt_compra) AS vb100_dt_compra,
+    vb100_dt_compra,
     vb100_txt_cnpj,
     vb100_txt_razao_social,
     vb100_qtd_volume / 1000 AS vb100_qtd_volume_1000m3,
     vb100_txt_produtor,
     vb100_txt_produtor_cnpj,
     FROM rw_ext_anp.venda_b100
-    WHERE vb100_dt_compra BETWEEN DATE('{{params.start_date}}') AND DATE('{{params.end_date}}')
+    WHERE vb100_dt_compra BETWEEN '{{params.start_date}}' '{{params.end_date}}'
 ) AS s
 ON
   t.vb100_dt_compra = s.vb100_dt_compra AND
