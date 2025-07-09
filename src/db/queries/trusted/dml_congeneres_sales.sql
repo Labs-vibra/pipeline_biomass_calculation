@@ -12,7 +12,7 @@ USING (
     rw_ext_anp.venda_congeneres
   WHERE
     LOWER(veco_txt_produto) LIKE '%diesel b%'
-    AND veco_dat_venda BETWEEN {{start_date}} AND {{end_date}}
+    AND veco_dat_venda BETWEEN '{{params.start_date}}' AND '{{params.end_date}}'
 ) AS source
 ON target.veco_dat_venda = source.veco_dat_venda 
    AND target.veco_nom_produto = source.veco_txt_produto
