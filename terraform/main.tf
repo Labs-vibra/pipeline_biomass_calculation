@@ -81,3 +81,23 @@ resource "google_cloud_run_v2_job" "anp_vendas_congeneres" {
         }
     }
 }
+
+# resource "google_composer_environment" "anp_composer" {
+#     name   = "anp-composer"
+#     region = var.region
+#     project = var.project_id
+
+#     config {
+#         node_config {
+#             service_account = var.service_account_email
+#         }
+#         software_config {
+#             image_version = "composer-3-airflow-2.10.5-build.8"
+#             pypi_packages = {
+#                 "apache-airflow-providers-google" = ""
+#                 "apache-airflow-providers-http" = ""
+#                 "apache-airflow-providers-ftp" = ""
+#             }
+#         }
+#     }
+# }
