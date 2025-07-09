@@ -20,7 +20,7 @@ USING (
       LOWER(veto_txt_produto) LIKE '%diesel b15%'
       OR LOWER(veto_txt_produto) LIKE '%diesel b2%'
     )
-    AND veto_dat_venda >= {{ params.start_date }} AND veto_dat_venda <= {{ params.end_date }}
+    AND veto_dat_venda >= '{{ params.start_date }}' AND veto_dat_venda <= '{{ params.end_date }}'
 	GROUP BY
 	veto_dat_venda,
 	veto_txt_razao_social,
