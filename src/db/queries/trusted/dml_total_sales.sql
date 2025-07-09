@@ -20,8 +20,7 @@ USING (
       LOWER(veto_txt_produto) LIKE '%diesel b15%'
       OR LOWER(veto_txt_produto) LIKE '%diesel b2%'
     )
-    AND veto_dat_venda >= {{start_date}} AND veto_dat_venda <= {{end_date}}
-	-- AND veto_dat_venda >= "2024-01-01" AND veto_dat_venda <= "2024-12-01"
+    AND veto_dat_venda >= {{ params.start_date }} AND veto_dat_venda <= {{ params.end_date }}
 	GROUP BY
 	veto_dat_venda,
 	veto_txt_razao_social,
@@ -34,8 +33,8 @@ USING (
 	veto_txt_nome_produto,
 	veto_txt_codigo_produto
 ) AS source
-ON target.veto_dat_venda = source.veto_dat_venda 
-   AND target.veto_txt_razao_social = source.veto_txt_razao_social 
+ON target.veto_dat_venda = source.veto_dat_venda
+   AND target.veto_txt_razao_social = source.veto_txt_razao_social
    AND target.veto_txt_produto = source.veto_txt_produto
    AND target.veto_txt_mercado_destino = source.veto_txt_mercado_destino
    AND target.veto_txt_destino_estado = source.veto_txt_destino_estado
