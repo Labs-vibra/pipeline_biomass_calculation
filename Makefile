@@ -11,6 +11,9 @@ run-docker-dev:
 	-e NOTEBOOK_URI="./notebooks/rw_ext_anp_total_sales.ipynb" \
 	run-notebook-api-dev
 
+gcp-login:
+	gcloud auth application-default login
+
 run-docker:
 	docker run \
 	-e NOTEBOOK_URI="./notebooks/rw_ext_anp_congeneres_sales.ipynb" \
