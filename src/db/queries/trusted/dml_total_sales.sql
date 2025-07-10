@@ -22,7 +22,8 @@ USING (
 	  OR LOWER(veto_txt_produto) LIKE '%energia elétrica%'
 	  OR LOWER(veto_txt_produto) LIKE '%rodoviário%'
     )
-    AND veto_dat_venda >= '{{ params.start_date }}' AND veto_dat_venda <= '{{ params.end_date }}'
+    AND veto_dat_venda >= '{{params.start_date}}'
+	AND veto_dat_venda <= '{{params.end_date}}'
 	GROUP BY
 	veto_dat_venda,
 	veto_txt_razao_social,
