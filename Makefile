@@ -21,6 +21,7 @@ run-docker:
 
 configure-docker-gcp:
 	gcloud auth configure-docker
+	gcloud config set project $(PROJECT_ID)
 
 upload-docker:
 	docker build -t us-central1-docker.pkg.dev/$(PROJECT_ID)/anp-repo-etl/run-notebook-api:latest .
