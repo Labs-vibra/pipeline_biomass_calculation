@@ -1,29 +1,34 @@
 WITH
 b100_sales AS b (
 	SELECT
-		insira_aqui_as_colunas_necessarias
+		vb100_dat_compra,
+		vb100_txt_razao_social,
+		vb100_qtd_volume_1000m3
 	FROM
 		td_ext_anp.venda_b100
 	WHERE
-		veto_dat_venda >= {{start_date}} AND veto_dat_venda <= {{end_date}}
+		vb100_dat_compra >= {{params.start_date}} AND vb100_dat_compra <= {{params.end_date}}
 ),
 
 total_sales AS t (
 	SELECT
-		insira_aqui_as_colunas_necessarias
+		veto_dat_venda,
+		veto_txt_razao_social,
+		veto_qtd_volume_1000m3,
+		
 	FROM
 		td_ext_anp.venda_total
 	WHERE
-		veto_dat_venda >= {{start_date}} AND veto_dat_venda <= {{end_date}}
+		veto_dat_venda >= {{params.start_date}} AND veto_dat_venda <= {{params.end_date}}
 ),
 
 venda_congeneres AS v (
 	SELECT
-		insira_aqui_as_colunas_necessarias
+		veco_dat_venda,
 	FROM
 		td_ext_anp.venda_congeneres
 	WHERE
-		veto_dat_venda >= {{start_date}} AND veto_dat_venda <= {{end_date}}
+		veto_dat_venda >= {{params.start_date}} AND veto_dat_venda <= {{params.end_date}}
 ),
 
 biomass_calculation AS bc (

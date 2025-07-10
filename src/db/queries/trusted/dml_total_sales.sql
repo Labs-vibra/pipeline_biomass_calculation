@@ -19,6 +19,8 @@ USING (
     AND NOT (
       LOWER(veto_txt_produto) LIKE '%diesel b15%'
       OR LOWER(veto_txt_produto) LIKE '%diesel b2%'
+	  OR LOWER(veto_txt_produto) LIKE '%energia elétrica%'
+	  OR LOWER(veto_txt_produto) LIKE '%rodoviário%'
     )
     AND veto_dat_venda >= '{{ params.start_date }}' AND veto_dat_venda <= '{{ params.end_date }}'
 	GROUP BY
