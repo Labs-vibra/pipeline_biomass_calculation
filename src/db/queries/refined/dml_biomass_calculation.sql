@@ -2,6 +2,8 @@ DECLARE MANDATORY_BIODIESEL_UNTIL_MAR_23 FLOAT64 DEFAULT 0.10;
 DECLARE MANDATORY_BIODIESEL_UNTIL_FEB_24 FLOAT64 DEFAULT 0.12; 
 DECLARE MANDATORY_BIODIESEL_UNTIL_DEC_25 FLOAT64 DEFAULT 0.14;
 
+MERGE rf_ext_anp.calculo_biomassa AS target
+USING (
 WITH
 venda_b100 AS (
 	SELECT
@@ -167,14 +169,43 @@ compra_liquida_b100 AS (
 )
 
 SELECT
-	clb.dat,
-	clb.razao_social,
-	clb.compra_liquida_b100,
-	ntb.necessidade_teorica_b100,
-	(ntb.necessidade_teorica_b100 - clb.compra_liquida_b100) AS gap_biodiesel,
-	0 AS variacao_estoque,
-	(ntb.necessidade_teorica_b100 - clb.compra_liquida_b100) + 0 AS gap_liquido
+	clb.dat AS cabi_dat_calculo,
+	clb.razao_social AS cabi_txt_razao_social,
+	clb.compra_liquida_b100 AS cabi_qtd_compra_liq_b100,
+	ntb.necessidade_teorica_b100 AS cabi_qtd_necessidade_teorica_b100,
+	(ntb.necessidade_teorica_b100 - clb.compra_liquida_b100) AS cabi_qtd_dif_biodiesel,
+	0 AS cabi_qtd_estoque,
+	(ntb.necessidade_teorica_b100 - clb.compra_liquida_b100) + 0 AS cabi_qtd_gap_liq_b100
 FROM 
 	compra_liquida_b100 clb
 JOIN
 	necessidade_teorica_b100 ntb ON clb.dat = ntb.dat AND clb.razao_social = ntb.razao_social
+) AS source
+ON target.cabi_dat_calculo = source.cabi_dat_calculo 
+   AND target.cabi_txt_razao_social = source.cabi_txt_razao_social
+WHEN MATCHED THEN
+  UPDATE SET
+    cabi_qtd_compra_liq_b100 = source.cabi_qtd_compra_liq_b100,
+    cabi_qtd_necessidade_teorica_b100 = source.cabi_qtd_necessidade_teorica_b100,
+    cabi_qtd_dif_biodiesel = source.cabi_qtd_dif_biodiesel,
+    cabi_qtd_estoque = source.cabi_qtd_estoque,
+    cabi_qtd_gap_liq_b100 = source.cabi_qtd_gap_liq_b100
+WHEN NOT MATCHED THEN
+  INSERT (
+    cabi_dat_calculo,
+    cabi_txt_razao_social,
+    cabi_qtd_compra_liq_b100,
+    cabi_qtd_necessidade_teorica_b100,
+    cabi_qtd_dif_biodiesel,
+    cabi_qtd_estoque,
+    cabi_qtd_gap_liq_b100
+  )
+  VALUES (
+	source.cabi_dat_calculo,
+    source.cabi_txt_razao_social,
+    source.cabi_qtd_compra_liq_b100,
+    source.cabi_qtd_necessidade_teorica_b100,
+    source.cabi_qtd_dif_biodiesel,
+    source.cabi_qtd_estoque,
+    source.cabi_qtd_gap_liq_b100
+  );
