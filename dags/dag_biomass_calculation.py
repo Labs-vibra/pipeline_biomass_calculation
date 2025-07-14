@@ -13,7 +13,14 @@ default_args = {
 bucket = os.getenv("BUCKET_NAME", "anp-ext-bucket-etl")
 
 params_dag = {
-    'start_date': "{{ macros.ds_format(macros.ds_add(ds, -90), '%Y-%m-%d', '%Y-%m-01') }}",
+    'start_date': """
+        {% set start = macros.ds_add(ds, -90) %}
+        {% if start[:4] != ds[:4] %}
+            {{ ds[:4] }}-01-01
+        {% else %}
+            {{ macros.ds_format(start, '%Y-%m-%d', '%Y-%m-01') }}
+        {% endif %}
+    """,
     'end_date': "{{ ds }}"
 }
 
