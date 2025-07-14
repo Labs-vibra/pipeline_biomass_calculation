@@ -81,7 +81,7 @@ with DAG(
 
     td_congeneres_sales = execute_query_from_gcs(
         task_id='002_congeneres_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_congeneres.sql'
+        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_congeneres_sales.sql'
     )
 
     rf_biomass_calculation = execute_query_from_gcs(
