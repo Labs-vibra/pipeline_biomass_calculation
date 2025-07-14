@@ -7,7 +7,7 @@ USING (
     veco_txt_destino,
     veco_txt_vendedor,
     veco_txt_comprador,
-    veco_qtd_volume_1000m3,
+    veco_qtd_volume_1000m3 / 1000000 AS veco_qtd_volume_1000m3,
   FROM
     rw_ext_anp.venda_congeneres
   WHERE
