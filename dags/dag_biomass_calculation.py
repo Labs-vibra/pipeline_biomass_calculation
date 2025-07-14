@@ -45,34 +45,19 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    extract_total_sales = run_cloud_run_job(
+    rw_total_sales = run_cloud_run_job(
         task_id="000_extract_total_sales",
         job_name="ext-total-sales",
     )
 
-    extract_b100_sales = run_cloud_run_job(
+    rw_b100_sales = run_cloud_run_job(
         task_id="000_extract_b100_sales",
         job_name="ext-b100-sales",
     )
 
-    extract_congeneres_sales = run_cloud_run_job(
+    rw_congeneres_sales = run_cloud_run_job(
         task_id="000_extract_congeneres_sales",
         job_name="ext-congeneres-sales",
-    )
-
-    rw_total_sales = execute_query_from_gcs(
-        task_id='001_total_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/raw/ddl_total_sales.sql'
-    )
-
-    rw_b100_sales = execute_query_from_gcs(
-        task_id='001_b100_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/raw/ddl_b100.sql'
-    )
-
-    rw_congeneres_sales = execute_query_from_gcs(
-        task_id='001_congeneres_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/raw/ddl_congeneres.sql'
     )
 
     td_total_sales = execute_query_from_gcs(
@@ -95,8 +80,8 @@ with DAG(
         query_gcs_path=f'gs://{bucket}/sql/refined/ddl_biomass_calculation.sql'
     )
 
-    extract_b100_sales >> rw_b100_sales >> td_b100_sales
-    extract_total_sales >> rw_total_sales >> td_total_sales
-    extract_congeneres_sales >> rw_congeneres_sales >> td_congeneres_sales
+    rw_b100_sales >> td_b100_sales
+    rw_total_sales >> td_total_sales
+    rw_congeneres_sales >> td_congeneres_sales
 
     [td_b100_sales, td_total_sales, td_congeneres_sales] >> rf_biomass_calculation
