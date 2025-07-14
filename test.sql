@@ -13,8 +13,8 @@ venda_b100 AS (
 	FROM
 		td_ext_anp.venda_b100
 	WHERE
-		vb100_dat_compra >= '{{params.start_date}}'
-		AND vb100_dat_compra <= '{{params.end_date}}'
+		vb100_dat_compra >= '2023-01-01'
+		AND vb100_dat_compra <= '2025-12-01'
 	GROUP BY
 		vb100_dat_compra,
 		vb100_txt_razao_social
@@ -28,8 +28,8 @@ venda_total AS (
 	FROM
 		td_ext_anp.venda_total
 	WHERE
-		veto_dat_venda >= '{{params.start_date}}'
-		AND veto_dat_venda <= '{{params.end_date}}'
+		veto_dat_venda >= '2023-01-01'
+		AND veto_dat_venda <= '2025-12-01'
 	GROUP BY
 		veto_dat_venda,
 		veto_txt_razao_social
@@ -43,8 +43,8 @@ b100_venda_congenere AS (
 	FROM
 		td_ext_anp.venda_congeneres
 	WHERE
-		veco_dat_venda >= '{{params.start_date}}'
-		AND veco_dat_venda <= '{{params.end_date}}'
+		veco_dat_venda >= '2023-01-01'
+		AND veco_dat_venda <= '2025-12-01'
 		AND veco_nom_produto = 'BIODIESEL B100'
 	GROUP BY
 		veco_dat_venda,
@@ -59,8 +59,8 @@ b100_compra_congenere AS (
 	FROM
 		td_ext_anp.venda_congeneres
 	WHERE
-		veco_dat_venda >= '{{params.start_date}}'
-		AND veco_dat_venda <= '{{params.end_date}}'
+		veco_dat_venda >= '2023-01-01'
+		AND veco_dat_venda <= '2025-12-01'
 		AND veco_nom_produto = 'BIODIESEL B100'
 	GROUP BY
 		veco_dat_venda,
@@ -75,8 +75,8 @@ dieselb_venda_congenere AS (
 	FROM
 		td_ext_anp.venda_congeneres
 	WHERE
-		veco_dat_venda >= '{{params.start_date}}'
-		AND veco_dat_venda <= '{{params.end_date}}'
+		veco_dat_venda >= '2023-01-01'
+		AND veco_dat_venda <= '2025-12-01'
 		AND veco_nom_produto <> 'BIODIESEL B100'
 	GROUP BY
 		veco_dat_venda,
@@ -91,8 +91,8 @@ dieselb_compra_congenere AS (
 	FROM
 		td_ext_anp.venda_congeneres
 	WHERE
-		veco_dat_venda >= '{{params.start_date}}'
-		AND veco_dat_venda <= '{{params.end_date}}'
+		veco_dat_venda >= '2023-01-01'
+		AND veco_dat_venda <= '2025-12-01'
 		AND veco_nom_produto <> 'BIODIESEL B100'
 	GROUP BY
 		veco_dat_venda,
