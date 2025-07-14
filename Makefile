@@ -1,4 +1,4 @@
-PROJECT_ID ?= named-embassy-456813-f3
+PROJECT_ID ?= labs-vibra-final
 
 build-docker:
 	docker build -t run-notebook-api .
