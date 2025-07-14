@@ -12,6 +12,11 @@ default_args = {
 
 bucket = os.getenv("BUCKET_NAME", "anp-ext-bucket-etl")
 
+params_dag = {
+    'start_date': "{{ macros.ds_format(ds, '%Y-%m-%d', '%Y-%m-01') }}",
+    'end_date': "{{ ds }}"
+}
+
 def execute_query_from_gcs(task_id, query_gcs_path):
     return BigQueryInsertJobOperator(
         task_id=task_id,
@@ -21,14 +26,11 @@ def execute_query_from_gcs(task_id, query_gcs_path):
                 "useLegacySql": False
             }
         },
-        params={
-            "start_date": "{{ macros.ds_format(ds, '%Y-%m-%d', '%Y-%m-01') }}",
-            "end_date": "{{ ds }}"
-        },
-        location="us"
+        params=params_dag,
+        location="us-central1"
     )
 
-def run_cloud_run_job(task_id, job_name):
+def exec_cloud_run_job(task_id, job_name):
     return CloudRunJobRunOperator(
         task_id=task_id,
         job_name=job_name,
@@ -45,17 +47,17 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    rw_total_sales = run_cloud_run_job(
+    rw_total_sales = exec_cloud_run_job(
         task_id="000_extract_total_sales",
         job_name="ext-total-sales",
     )
 
-    rw_b100_sales = run_cloud_run_job(
+    rw_b100_sales = exec_cloud_run_job(
         task_id="000_extract_b100_sales",
         job_name="ext-b100-sales",
     )
 
-    rw_congeneres_sales = run_cloud_run_job(
+    rw_congeneres_sales = exec_cloud_run_job(
         task_id="000_extract_congeneres_sales",
         job_name="ext-congeneres-sales",
     )
