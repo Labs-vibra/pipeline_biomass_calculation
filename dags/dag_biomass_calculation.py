@@ -4,7 +4,6 @@ from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobO
 from airflow.providers.google.cloud.operators.cloud_run import CloudRunJobRunOperator
 import os
 
-# Define default arguments for the DAG
 default_args = {
     'owner': 'airflow',
     'start_date': days_ago(1),
@@ -46,7 +45,6 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    # Cloud Run Extractions
     extract_total_sales = run_cloud_run_job(
         task_id="000_extract_total_sales",
         job_name="ext-total-sales",
@@ -62,7 +60,6 @@ with DAG(
         job_name="ext-congeneres-sales",
     )
 
-    # Trusted Transformations
     rw_total_sales = execute_query_from_gcs(
         task_id='001_total_sales_execute_query',
         query_gcs_path=f'gs://{bucket}/sql/raw/ddl_total_sales.sql'
