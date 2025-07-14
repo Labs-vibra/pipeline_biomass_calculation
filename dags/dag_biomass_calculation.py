@@ -71,22 +71,22 @@ with DAG(
 
     td_total_sales = execute_query_from_gcs(
         task_id='002_total_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/ddl_total_sales.sql'
+        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_total_sales.sql'
     )
 
     td_b100_sales = execute_query_from_gcs(
         task_id='002_b100_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/ddl_b100.sql'
+        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_b100.sql'
     )
 
     td_congeneres_sales = execute_query_from_gcs(
         task_id='002_congeneres_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/ddl_congeneres.sql'
+        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_congeneres.sql'
     )
 
     rf_biomass_calculation = execute_query_from_gcs(
         task_id='002_biomass_calculation_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/refined/ddl_biomass_calculation.sql'
+        query_gcs_path=f'gs://{bucket}/sql/refined/dml_biomass_calculation.sql'
     )
 
     rw_b100_sales >> td_b100_sales
