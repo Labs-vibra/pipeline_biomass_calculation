@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.utils.dates import days_ago
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
-from airflow.providers.google.cloud.operators.cloud_run import CloudRunJobRunOperator
+from airflow.providers.google.cloud.operators.cloud_run import CloudRunExecuteJobOperator
 import os
 
 default_args = {
@@ -38,12 +38,12 @@ def execute_query_from_gcs(task_id, query_gcs_path):
     )
 
 def exec_cloud_run_job(task_id, job_name):
-    return CloudRunJobRunOperator(
+    return CloudRunExecuteJobOperator(
         task_id=task_id,
         job_name=job_name,
-        region='us-central1',
+        region='europe-west1',
         project_id=os.getenv("GOOGLE_CLOUD_PROJECT"),
-        wait_until_complete=True,
+        deferrable=True
     )
 
 with DAG(
@@ -70,17 +70,17 @@ with DAG(
     )
 
     td_total_sales = execute_query_from_gcs(
-        task_id='002_total_sales_execute_query',
+        task_id='001_total_sales_execute_query',
         query_gcs_path=f'gs://{bucket}/sql/trusted/dml_total_sales.sql'
     )
 
     td_b100_sales = execute_query_from_gcs(
-        task_id='002_b100_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_b100.sql'
+        task_id='001_b100_sales_execute_query',
+        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_b100_sales.sql'
     )
 
     td_congeneres_sales = execute_query_from_gcs(
-        task_id='002_congeneres_sales_execute_query',
+        task_id='001_congeneres_sales_execute_query',
         query_gcs_path=f'gs://{bucket}/sql/trusted/dml_congeneres_sales.sql'
     )
 

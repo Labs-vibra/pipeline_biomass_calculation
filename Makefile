@@ -8,7 +8,7 @@ build-docker-dev:
 
 run-docker-dev:
 	docker run \
-	-e NOTEBOOK_URI="./notebooks/rw_ext_anp_total_sales.ipynb" \
+	-e NOTEBOOK_TO_BE_EXECUTED="./notebooks/rw_ext_anp_total_sales.ipynb" \
 	run-notebook-api-dev
 
 gcp-login:
