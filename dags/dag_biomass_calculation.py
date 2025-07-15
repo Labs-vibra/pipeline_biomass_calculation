@@ -3,8 +3,8 @@ from airflow.utils.dates import days_ago
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from airflow.providers.google.cloud.operators.cloud_run import CloudRunExecuteJobOperator
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
-
 import os
+import datetime as dt
 
 default_args = {
     'owner': 'airflow',
@@ -14,16 +14,10 @@ default_args = {
 
 bucket = os.getenv("BUCKET_NAME", "anp-ext-bucket-etl")
 
+#start date last 3 months
 params_dag = {
-    'start_date': """
-        {% set start = macros.ds_add(ds, -90) %}
-        {% if start[:4] != ds[:4] %}
-            {{ ds[:4] }}-01-01
-        {% else %}
-            {{ macros.ds_format(start, '%Y-%m-%d', '%Y-%m-01') }}
-        {% endif %}
-    """,
-    'end_date': "{{ ds }}"
+    'start_date': (dt.datetime.now() - dt.timedelta(days=90)).strftime('%Y-%m-%d'),
+    'end_date': dt.datetime.now().strftime('%Y-%m-%d'),
 }
 
 def getSqlContentFromGCS(query_gcs_path):
@@ -42,7 +36,7 @@ def execute_query_from_gcs(task_id, query_gcs_path):
             }
         },
         params=params_dag,
-        location="us-central1"
+        location="US"
     )
 
 def exec_cloud_run_job(task_id, job_name):
