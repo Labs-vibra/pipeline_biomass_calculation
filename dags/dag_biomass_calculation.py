@@ -2,6 +2,8 @@ from airflow import DAG
 from airflow.utils.dates import days_ago
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from airflow.providers.google.cloud.operators.cloud_run import CloudRunExecuteJobOperator
+from airflow.providers.google.cloud.hooks.gcs import GCSHook
+
 import os
 
 default_args = {
@@ -24,12 +26,18 @@ params_dag = {
     'end_date': "{{ ds }}"
 }
 
+def getSqlContentFromGCS(query_gcs_path):
+    gcs_hook = GCSHook()
+    bucket_name, object_name = query_gcs_path.replace('gs://', '').split('/', 1)
+    return gcs_hook.download(bucket_name=bucket_name, object_name=object_name).decode('utf-8')
+
 def execute_query_from_gcs(task_id, query_gcs_path):
+    get_sql_from_gcs = getSqlContentFromGCS(query_gcs_path)
     return BigQueryInsertJobOperator(
         task_id=task_id,
         configuration={
             "query": {
-                "query": query_gcs_path,
+                "query": get_sql_from_gcs,
                 "useLegacySql": False
             }
         },

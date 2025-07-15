@@ -1,4 +1,3 @@
-main.py
 gcp.secrets.json
 .env
 pyproject.toml
