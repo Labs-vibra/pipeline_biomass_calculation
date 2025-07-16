@@ -3,7 +3,6 @@ from airflow.utils.dates import days_ago
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from airflow.providers.google.cloud.operators.cloud_run import CloudRunExecuteJobOperator
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
-from airflow.decorators import TaskGroup
 import os
 import datetime as dt
 
