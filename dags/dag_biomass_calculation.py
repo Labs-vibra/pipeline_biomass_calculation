@@ -69,6 +69,16 @@ with DAG(
         job_name="ext-congeneres-sales",
     )
 
+    rw_dados_agentes = exec_cloud_run_job(
+        task_id="000_extract_dados_agentes",
+        job_name="ext-dados-agentes",
+    )
+
+    td_dados_agentes = populate_table(
+        table="td_dados_agentes",
+        sql_name=f'gs://{bucket}/sql/trusted/dml_dados_agentes.sql'
+    )
+
     td_total_sales = populate_table(
         table="td_total_sales",
         sql_name=f'gs://{bucket}/sql/trusted/dml_total_sales.sql'
@@ -92,4 +102,5 @@ with DAG(
     rw_total_sales >> td_total_sales
     rw_b100_sales >> td_b100_sales
     rw_congeneres_sales >> td_congeneres_sales
-    [td_total_sales, td_b100_sales, td_congeneres_sales] >> rf_biomass_calculation
+    rw_dados_agentes >> td_dados_agentes
+    [td_total_sales, td_b100_sales, td_congeneres_sales] >> [td_dados_agentes] >> rf_biomass_calculation
