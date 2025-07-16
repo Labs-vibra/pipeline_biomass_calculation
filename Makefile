@@ -1,4 +1,5 @@
 PROJECT_ID ?= labs-vibra-final
+ARTIFACT_REPO ?= ar-juridico-process-notebooks
 
 build-docker:
 	docker build -t run-notebook-api .
@@ -24,8 +25,8 @@ configure-docker-gcp:
 	gcloud config set project $(PROJECT_ID)
 
 upload-docker:
-	docker build -t us-central1-docker.pkg.dev/$(PROJECT_ID)/anp-repo-etl/run-notebook-api:latest .
-	docker push us-central1-docker.pkg.dev/$(PROJECT_ID)/anp-repo-etl/run-notebook-api:latest
+	docker build -t us-central1-docker.pkg.dev/$(PROJECT_ID)/${ARTIFACT_REPO}/run-notebook-api:latest .
+	docker push us-central1-docker.pkg.dev/$(PROJECT_ID)/${ARTIFACT_REPO}/run-notebook-api:latest
 
 create-venv:
 	python3 -m venv .venv
