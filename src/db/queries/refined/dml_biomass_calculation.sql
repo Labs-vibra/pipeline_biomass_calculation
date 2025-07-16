@@ -102,8 +102,8 @@ dieselb_compra_congenere AS (
 todas_datas_empresas AS (
     SELECT DISTINCT
         dat,
-        razao_social,
-        cnpj.agnt_num_base_cnpj
+        empresas.razao_social,
+        cnpj.raiz_cnpj
     FROM (
         SELECT dat, razao_social FROM venda_b100
         UNION DISTINCT
@@ -117,15 +117,15 @@ todas_datas_empresas AS (
         UNION DISTINCT
         SELECT dat, razao_social FROM dieselb_compra_congenere
     ) empresas
-    LEFT JOIN rf_ext_anp.cnpj_agentes cnpj 
-        ON empresas.razao_social = cnpj.agnt_nom_razao_social
+    LEFT JOIN td_ext_anp.dados_agentes cnpj 
+        ON empresas.razao_social = cnpj.razao_social
 ),
 
 dados_consolidados AS (
     SELECT
         tde.dat,
         tde.razao_social,
-        tde.agnt_num_base_cnpj,
+        tde.raiz_cnpj AS agnt_num_base_cnpj,  -- Fixed: use raiz_cnpj from tde
         COALESCE(vb.volume_1000m3, 0) AS b100_venda_volume_1000m3,
         COALESCE(vt.volume_1000m3, 0) AS venda_total_volume_1000m3,
         COALESCE(bvc.volume_1000m3, 0) AS b100_venda_congenere_volume_1000m3,
