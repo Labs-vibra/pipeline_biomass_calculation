@@ -14,24 +14,22 @@ default_args = {
 
 bucket = os.getenv("BUCKET_NAME", "anp-ext-bucket-etl")
 
-#start date last 3 months
 params_dag = {
     'start_date': (dt.datetime.now() - dt.timedelta(days=90)).strftime('%Y-%m-%d'),
     'end_date': dt.datetime.now().strftime('%Y-%m-%d'),
 }
 
-def getSqlContentFromGCS(query_gcs_path):
+def get_sql_content(sql_path):
     gcs_hook = GCSHook()
-    bucket_name, object_name = query_gcs_path.replace('gs://', '').split('/', 1)
+    bucket_name, object_name = sql_path.replace('gs://', '').split('/', 1)
     return gcs_hook.download(bucket_name=bucket_name, object_name=object_name).decode('utf-8')
 
-def execute_query_from_gcs(task_id, query_gcs_path):
-    get_sql_from_gcs = getSqlContentFromGCS(query_gcs_path)
+def populate_table(table, sql_name):
     return BigQueryInsertJobOperator(
-        task_id=task_id,
+        task_id=f"populate_query_{table}_job",
         configuration={
             "query": {
-                "query": get_sql_from_gcs,
+                "query": get_sql_content(sql_name),
                 "useLegacySql": False
             }
         },
@@ -71,28 +69,27 @@ with DAG(
         job_name="ext-congeneres-sales",
     )
 
-    td_total_sales = execute_query_from_gcs(
-        task_id='001_total_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_total_sales.sql'
+    td_total_sales = populate_table(
+        table="td_total_sales",
+        sql_name=f'gs://{bucket}/sql/trusted/dml_total_sales.sql'
     )
 
-    td_b100_sales = execute_query_from_gcs(
-        task_id='001_b100_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_b100_sales.sql'
+    td_b100_sales = populate_table(
+        table="td_b100_sales",
+        sql_name=f'gs://{bucket}/sql/trusted/dml_b100_sales.sql'
     )
 
-    td_congeneres_sales = execute_query_from_gcs(
-        task_id='001_congeneres_sales_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/trusted/dml_congeneres_sales.sql'
+    td_congeneres_sales = populate_table(
+        table="td_congeneres_sales",
+        sql_name=f'gs://{bucket}/sql/trusted/dml_congeneres_sales.sql'
     )
 
-    rf_biomass_calculation = execute_query_from_gcs(
-        task_id='002_biomass_calculation_execute_query',
-        query_gcs_path=f'gs://{bucket}/sql/refined/dml_biomass_calculation.sql'
+    rf_biomass_calculation = populate_table(
+        table="rf_biomass_calculation",
+        sql_name=f'gs://{bucket}/sql/refined/dml_biomass_calculation.sql'
     )
 
-    rw_b100_sales >> td_b100_sales
     rw_total_sales >> td_total_sales
+    rw_b100_sales >> td_b100_sales
     rw_congeneres_sales >> td_congeneres_sales
-
-    [td_b100_sales, td_total_sales, td_congeneres_sales] >> rf_biomass_calculation
+    [td_total_sales, td_b100_sales, td_congeneres_sales] >> rf_biomass_calculation
