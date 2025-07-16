@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY ./requirements.txt .
 COPY ./src/main.py .
-COPY ./src/notebooks/ ./notebooks/
 
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    mkdir /app/notebooks/output
+    pip install --no-cache-dir -r requirements.txt
+
+RUN mkdir -p /app/notebooks/output
 
 CMD ["python3", "main.py"]
