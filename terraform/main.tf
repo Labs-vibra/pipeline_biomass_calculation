@@ -23,7 +23,7 @@ resource "google_cloud_run_v2_job" "anp_vendas_b100_job" {
             containers {
                 image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.anp_repo_etl.repository_id}/run-notebook-api:latest"
                 env {
-                    name  = "NOTEBOOK_URI"
+                    name  = "NOTEBOOK_TO_BE_EXECUTED"
                     value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_b100_sales.ipynb"
                 }
                 resources {
@@ -47,7 +47,7 @@ resource "google_cloud_run_v2_job" "anp_vendas_total_job" {
             containers {
                 image = "${var.region}-docker.pkg.dev/${var.project_id}/anp-repo-etl/run-notebook-api:latest"
                 env {
-                    name  = "NOTEBOOK_URI"
+                    name  = "NOTEBOOK_TO_BE_EXECUTED"
                     value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_b100_sales.ipynb"
                 }
                 resources {
@@ -71,7 +71,7 @@ resource "google_cloud_run_v2_job" "anp_vendas_congeneres" {
             containers {
                 image = "${var.region}-docker.pkg.dev/${var.project_id}/anp-repo-etl/run-notebook-api:latest"
                 env {
-                    name  = "NOTEBOOK_URI"
+                    name  = "NOTEBOOK_TO_BE_EXECUTED"
                     value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_congeneres_sales.ipynb"
                 }
                 resources {

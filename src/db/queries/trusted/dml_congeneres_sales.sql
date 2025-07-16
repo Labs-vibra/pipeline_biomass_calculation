@@ -1,18 +1,18 @@
 MERGE td_ext_anp.venda_congeneres AS target
 USING (
   SELECT
-    veco_dat_venda,
-    veco_txt_produto,
-    veco_txt_origem,
-    veco_txt_destino,
-    veco_txt_vendedor,
-    veco_txt_comprador,
-    veco_qtd_volume_1000m3 / 1000000 AS veco_qtd_volume_1000m3,
+    periodo AS veco_dat_venda,
+    produto AS veco_txt_produto,
+    uf_origem AS veco_txt_origem,
+    uf_destino AS veco_txt_destino,
+    vendedor AS veco_txt_vendedor,
+    comprador AS veco_txt_comprador,
+    qtd_produto_liquido / 1000000 AS veco_qtd_volume_1000m3,
   FROM
     rw_ext_anp.venda_congeneres
   WHERE
-    LOWER(veco_txt_produto) LIKE '%diesel b%'
-    AND veco_dat_venda BETWEEN '{{params.start_date}}' AND '{{params.end_date}}'
+    LOWER(produto) LIKE '%diesel b%'
+    AND periodo BETWEEN '{{params.start_date}}' AND '{{params.end_date}}'
 ) AS source
 ON target.veco_dat_venda = source.veco_dat_venda 
    AND target.veco_nom_produto = source.veco_txt_produto
@@ -34,11 +34,11 @@ WHEN NOT MATCHED THEN
     veco_qtd_volume_1000m3
   )
   VALUES (
-    veco_dat_venda,
-    veco_txt_produto,
-    veco_txt_origem,
-    veco_txt_destino,
-    veco_txt_vendedor,
-    veco_txt_comprador,
-    veco_qtd_volume_1000m3
+    source.veco_dat_venda,
+    source.veco_txt_produto,
+    source.veco_txt_origem,
+    source.veco_txt_destino,
+    source.veco_txt_vendedor,
+    source.veco_txt_comprador,
+    source.veco_qtd_volume_1000m3
   );
