@@ -54,7 +54,6 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    # Extrações via Cloud Run
     rw_total_sales = exec_cloud_run_job(
         task_id="000_extract_total_sales",
         job_name="ext-total-sales",
@@ -70,7 +69,6 @@ with DAG(
         job_name="ext-congeneres-sales",
     )
 
-    # Populando tabelas Trusted
     td_total_sales = populate_table(
         table="td_total_sales",
         sql_name=f'gs://{bucket}/sql/trusted/dml_total_sales.sql'
@@ -86,13 +84,11 @@ with DAG(
         sql_name=f'gs://{bucket}/sql/trusted/dml_congeneres_sales.sql'
     )
 
-    # Populando tabela Refined
     rf_biomass_calculation = populate_table(
         table="rf_biomass_calculation",
         sql_name=f'gs://{bucket}/sql/refined/dml_biomass_calculation.sql'
     )
 
-    # Orquestração
     rw_total_sales >> td_total_sales
     rw_b100_sales >> td_b100_sales
     rw_congeneres_sales >> td_congeneres_sales
