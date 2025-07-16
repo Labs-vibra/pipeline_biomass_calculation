@@ -14,6 +14,8 @@ USING (
 	data_final_validade
   FROM
 	rw_ext_anp.dados_agentes
+  WHERE
+	data_upload = (SELECT MAX(data_upload) FROM rw_ext_anp.dados_agentes)
 ) AS source
 ON target.cod_agente_anp = source.cod_agente_anp
    AND target.raiz_cnpj = source.raiz_cnpj
