@@ -1,14 +1,14 @@
-  MERGE INTO `td_ext_anp.venda_b100` AS t
+MERGE INTO `td_ext_anp.venda_b100` AS t
   USING (
       SELECT
-      vb100_dat_compra,
-      vb100_num_cnpj,
-      vb100_txt_razao_social,
-      vb100_qtd_volume / 1000 AS vb100_qtd_volume_1000m3,
-      vb100_nom_produtor,
-      vb100_num_produtor_cnpj,
+      data_compra AS vb100_dat_compra,
+      raiz_cnpj_distribuidor AS vb100_num_cnpj,
+      razao_social_distribuidor AS vb100_txt_razao_social,
+      qtd_de_produto_m3 / 1000 AS vb100_qtd_volume_1000m3,
+      razao_social_produtor AS vb100_nom_produtor,
+      cnpj_produtor AS vb100_num_produtor_cnpj,
       FROM rw_ext_anp.venda_b100
-      WHERE vb100_dat_compra BETWEEN '{{params.start_date}}' AND '{{params.end_date}}'
+      WHERE data_compra BETWEEN '2023-01-01' AND '2025-12-31'
   ) AS s
   ON
     t.vb100_dat_compra = s.vb100_dat_compra AND
