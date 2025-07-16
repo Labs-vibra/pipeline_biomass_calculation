@@ -34,14 +34,14 @@ def populate_table(table, sql_name):
             }
         },
         params=params_dag,
-        location="US"
+        location="us-central1"
     )
 
 def exec_cloud_run_job(task_id, job_name):
     return CloudRunExecuteJobOperator(
-        task_id=task_id,
-        job_name=job_name,
-        region='europe-west1',
+        task_id=f"rw_extract_{task_id}_job",
+        job_name=f"cr-juridico-{job_name}-dev",
+        region='us-central1',
         project_id=os.getenv("GOOGLE_CLOUD_PROJECT"),
         deferrable=True
     )
@@ -55,23 +55,23 @@ with DAG(
 ) as dag:
 
     rw_total_sales = exec_cloud_run_job(
-        task_id="000_extract_total_sales",
-        job_name="ext-total-sales",
+        task_id="total_sales",
+        job_name="etl-venda-total",
     )
 
     rw_b100_sales = exec_cloud_run_job(
-        task_id="000_extract_b100_sales",
-        job_name="ext-b100-sales",
+        task_id="b100_sales",
+        job_name="etl-venda-b100",
     )
 
     rw_congeneres_sales = exec_cloud_run_job(
-        task_id="000_extract_congeneres_sales",
-        job_name="ext-congeneres-sales",
+        task_id="congeneres_sales",
+        job_name="etl-venda-congeneres",
     )
 
     rw_dados_agentes = exec_cloud_run_job(
-        task_id="000_extract_dados_agentes",
-        job_name="ext-dados-agentes",
+        task_id="dados_agentes",
+        job_name="etl-agentes-regulados-simp",
     )
 
     td_dados_agentes = populate_table(
