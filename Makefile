@@ -52,7 +52,7 @@ upload-data-to-gcs:
 upload-dags:
 	gsutil cp -r dags/* gs://$(COMPOSE_BUCKET_NAME)/dags/
 
-upload-infra: configure-docker-gcp up-artifact upload-docker upload-data-to-gcs upload-dags
+upload-infra: gcp-login configure-docker-gcp up-artifact upload-docker upload-data-to-gcs upload-dags
 	cd terraform; \
 	terraform apply -auto-approve
 

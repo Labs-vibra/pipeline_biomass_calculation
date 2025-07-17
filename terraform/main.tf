@@ -45,7 +45,7 @@ resource "google_cloud_run_v2_job" "anp_vendas_total_job" {
     template {
         template {
             containers {
-                image = "${var.region}-docker.pkg.dev/${var.project_id}/anp-repo-etl/run-notebook-api:latest"
+                image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.anp_repo_etl.repository_id}/run-notebook-api:latest"
                 env {
                     name  = "NOTEBOOK_TO_BE_EXECUTED"
                     value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_total_sales.ipynb"
@@ -70,7 +70,7 @@ resource "google_cloud_run_v2_job" "anp_vendas_congeneres" {
     template {
         template {
             containers {
-                image = "${var.region}-docker.pkg.dev/${var.project_id}/anp-repo-etl/run-notebook-api:latest"
+                image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.anp_repo_etl.repository_id}/run-notebook-api:latest"
                 env {
                     name  = "NOTEBOOK_TO_BE_EXECUTED"
                     value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_congeneres_sales.ipynb"
@@ -95,7 +95,7 @@ resource "google_cloud_run_v2_job" "anp_grupos_empresariais" {
     template {
         template {
             containers {
-                image = "${var.region}-docker.pkg.dev/${var.project_id}/anp-repo-etl/run-notebook-api:latest"
+                image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.anp_repo_etl.repository_id}/run-notebook-api:latest"
                 env {
                     name  = "NOTEBOOK_TO_BE_EXECUTED"
                     value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rf_ext_anp_empresarial_groups.ipynb"
@@ -120,7 +120,7 @@ resource "google_cloud_run_v2_job" "anp_agentes_regulados_simp" {
     template {
         template {
             containers {
-                image = "${var.region}-docker.pkg.dev/${var.project_id}/anp-repo-etl/run-notebook-api:latest"
+                image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.anp_repo_etl.repository_id}/run-notebook-api:latest"
                 env {
                     name  = "NOTEBOOK_TO_BE_EXECUTED"
                     value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_regulatory_agents_simplified.ipynb"
