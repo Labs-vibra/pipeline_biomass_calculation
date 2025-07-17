@@ -1,5 +1,7 @@
 PROJECT_ID ?= labs-vibra-final
 ARTIFACT_REPO ?= ar-juridico-process-notebooks
+BUCKET_NAME ?= vibra-dtan-juridico-anp-input
+COMPOSE_BUCKET_NAME ?= $(BUCKET_NAME)
 
 build-docker:
 	docker build -t run-notebook-api .
@@ -33,3 +35,25 @@ create-venv:
 
 install-requirements:
 	.venv/bin/pip install -r requirements.txt
+
+up-artifact:
+	cd terraform; \
+	terraform apply -target=google_artifact_registry_repository.anp_repo_etl -auto-approve
+
+upload-infra: configure-docker-gcp up-artifact upload-docker
+	cd terraform; \
+	terraform apply -auto-approve
+
+upload-data-to-gcs:
+	gsutil cp -r src/notebooks/*.ipynb gs://$(BUCKET_NAME)/notebooks/
+	gsutil cp -r src/db/queries/* gs://$(BUCKET_NAME)/sql/
+	gsutil cp -r src/db/schemas/* gs://$(BUCKET_NAME)/sql/schemas/
+
+upload-dags:
+	gsutil cp -r dags/* gs://$(COMPOSE_BUCKET_NAME)/dags/
+
+upload-infra: configure-docker-gcp up-artifact upload-docker upload-data-to-gcs upload-dags
+	cd terraform; \
+	terraform apply -auto-approve
+
+
