@@ -123,7 +123,7 @@ resource "google_cloud_run_v2_job" "anp_agentes_regulados_simp" {
                 image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.anp_repo_etl.repository_id}/run-notebook-api:latest"
                 env {
                     name  = "NOTEBOOK_TO_BE_EXECUTED"
-                    value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_regulatory_agents_simplified.ipynb"
+                    value = "gs://${google_storage_bucket.anp_bucket_etl.name}/notebooks/rw_ext_anp_dados_agentes.ipynb"
                 }
                 resources {
                     limits = {
@@ -136,4 +136,32 @@ resource "google_cloud_run_v2_job" "anp_agentes_regulados_simp" {
         }
     }
     depends_on = [google_storage_bucket.anp_bucket_etl, google_artifact_registry_repository.anp_repo_etl]
+}
+
+resource "google_composer_environment" "anp_composer" {
+    name   = "composer-jur-anp-dev"
+    region = var.region
+    project = var.project_id
+
+
+    config {
+        node_config {
+            service_account = var.service_account_email
+        }
+        software_config {
+            image_version = "composer-3-airflow-2.10.5-build.9"
+            pypi_packages = {
+                "apache-airflow-providers-google" = ""
+            }
+        }
+    }
+    depends_on = [
+        google_storage_bucket.anp_bucket_etl,
+        google_artifact_registry_repository.anp_repo_etl,
+        google_cloud_run_v2_job.anp_vendas_b100_job,
+        google_cloud_run_v2_job.anp_vendas_total_job,
+        google_cloud_run_v2_job.anp_vendas_congeneres,
+        google_cloud_run_v2_job.anp_grupos_empresariais,
+        google_cloud_run_v2_job.anp_agentes_regulados_simp
+    ]
 }

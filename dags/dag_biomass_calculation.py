@@ -12,7 +12,7 @@ default_args = {
     'retries': 1,
 }
 
-bucket = os.getenv("BUCKET_NAME", "anp-ext-bucket-etl")
+bucket = os.getenv("BUCKET_NAME", "vibra-dtan-juridico-anp-input")
 
 params_dag = {
     'start_date': (dt.datetime.now() - dt.timedelta(days=90)).strftime('%Y-%m-%d'),
@@ -103,4 +103,4 @@ with DAG(
     rw_b100_sales >> td_b100_sales
     rw_congeneres_sales >> td_congeneres_sales
     rw_dados_agentes >> td_dados_agentes
-    [td_total_sales, td_b100_sales, td_congeneres_sales] >> [td_dados_agentes] >> rf_biomass_calculation
+    [td_total_sales, td_b100_sales, td_congeneres_sales] >> td_dados_agentes >> rf_biomass_calculation

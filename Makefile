@@ -1,7 +1,7 @@
 PROJECT_ID ?= labs-vibra-final
 ARTIFACT_REPO ?= ar-juridico-process-notebooks
 BUCKET_NAME ?= vibra-dtan-juridico-anp-input
-COMPOSE_BUCKET_NAME ?= $(BUCKET_NAME)
+COMPOSE_BUCKET_NAME ?= us-central1-composer-jur-an-176600af-bucket
 
 build-docker:
 	docker build -t run-notebook-api .
@@ -36,23 +36,24 @@ create-venv:
 install-requirements:
 	.venv/bin/pip install -r requirements.txt
 
-up-artifact:
+up-first-part:
 	cd terraform; \
 	terraform apply -target=google_artifact_registry_repository.anp_repo_etl -auto-approve
+	terraform apply -target=google_storage_bucket.anp_bucket_etl -auto-approve
 
-upload-infra: configure-docker-gcp up-artifact upload-docker
+upload-infra: configure-docker-gcp up-first-part upload-docker
 	cd terraform; \
 	terraform apply -auto-approve
 
 upload-data-to-gcs:
 	gsutil cp -r src/notebooks/*.ipynb gs://$(BUCKET_NAME)/notebooks/
-	gsutil cp -r src/db/queries/* gs://$(BUCKET_NAME)/sql/
+	gsutil cp -r src/db/xqueries/* gs://$(BUCKET_NAME)/sql/
 	gsutil cp -r src/db/schemas/* gs://$(BUCKET_NAME)/sql/schemas/
 
 upload-dags:
 	gsutil cp -r dags/* gs://$(COMPOSE_BUCKET_NAME)/dags/
 
-upload-infra: gcp-login configure-docker-gcp up-artifact upload-docker upload-data-to-gcs upload-dags
+upload-infra: gcp-login configure-docker-gcp up-first-part upload-docker upload-data-to-gcs
 	cd terraform; \
 	terraform apply -auto-approve
 
