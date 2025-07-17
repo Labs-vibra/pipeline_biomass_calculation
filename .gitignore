@@ -9,4 +9,3 @@ gcp.secrets.json
 
 # Terraform
 terraform/.terraform/
-terraform/terraform.tfstate*
