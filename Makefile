@@ -23,7 +23,7 @@ run-docker:
 	run-notebook-api
 
 configure-docker-gcp:
-	gcloud auth configure-docker
+	gcloud auth configure-docker us-central1-docker.pkg.dev
 	gcloud config set project $(PROJECT_ID)
 
 upload-docker:
