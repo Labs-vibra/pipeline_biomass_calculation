@@ -38,7 +38,7 @@ install-requirements:
 
 up-first-part:
 	cd terraform; \
-	terraform apply -target=google_artifact_registry_repository.anp_repo_etl -auto-approve
+		terraform apply -target=google_artifact_registry_repository.anp_repo_etl -auto-approve; \
 	terraform apply -target=google_storage_bucket.anp_bucket_etl -auto-approve
 
 upload-infra: configure-docker-gcp up-first-part upload-docker
@@ -47,7 +47,7 @@ upload-infra: configure-docker-gcp up-first-part upload-docker
 
 upload-data-to-gcs:
 	gsutil cp -r src/notebooks/*.ipynb gs://$(BUCKET_NAME)/notebooks/
-	gsutil cp -r src/db/xqueries/* gs://$(BUCKET_NAME)/sql/
+	gsutil cp -r src/db/queries/* gs://$(BUCKET_NAME)/sql/
 	gsutil cp -r src/db/schemas/* gs://$(BUCKET_NAME)/sql/schemas/
 
 upload-dags:
