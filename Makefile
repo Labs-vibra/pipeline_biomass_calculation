@@ -1,7 +1,7 @@
 PROJECT_ID ?= labs-vibra-final
 ARTIFACT_REPO ?= ar-juridico-process-notebooks
 BUCKET_NAME ?= vibra-dtan-juridico-anp-input
-COMPOSE_BUCKET_NAME ?= us-central1-composer-jur-an-176600af-bucket
+COMPOSE_BUCKET_NAME ?= us-central1-composer-jur-an-bcdb9f8d-bucket
 
 build-docker:
 	docker build -t run-notebook-api .
@@ -15,7 +15,7 @@ run-docker-dev:
 	run-notebook-api-dev
 
 gcp-login:
-	gcloud auth application-default login
+	gcloud auth application-default login --no-launch-browser
 
 run-docker:
 	docker run \
@@ -53,7 +53,7 @@ upload-data-to-gcs:
 upload-dags:
 	gsutil cp -r dags/* gs://$(COMPOSE_BUCKET_NAME)/dags/
 
-upload-infra: gcp-login configure-docker-gcp up-first-part upload-docker upload-data-to-gcs
+upload-infra: configure-docker-gcp up-first-part upload-docker upload-data-to-gcs
 	cd terraform; \
 	terraform apply -auto-approve
 

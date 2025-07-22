@@ -13,6 +13,7 @@ default_args = {
 }
 
 bucket = os.getenv("BUCKET_NAME", "vibra-dtan-juridico-anp-input")
+project_id = os.getenv("GOOGLE_CLOUD_PROJECT", "labs-vibra-final")
 
 params_dag = {
     'start_date': (dt.datetime.now() - dt.timedelta(days=90)).strftime('%Y-%m-%d'),
@@ -34,7 +35,8 @@ def populate_table(table, sql_name):
             }
         },
         params=params_dag,
-        location="us-central1"
+        location="US"
+
     )
 
 def exec_cloud_run_job(task_id, job_name):
@@ -42,8 +44,8 @@ def exec_cloud_run_job(task_id, job_name):
         task_id=f"rw_extract_{task_id}_job",
         job_name=f"cr-juridico-{job_name}-dev",
         region='us-central1',
-        project_id=os.getenv("GOOGLE_CLOUD_PROJECT"),
-        deferrable=True
+        project_id=project_id,
+        deferrable=False
     )
 
 with DAG(
