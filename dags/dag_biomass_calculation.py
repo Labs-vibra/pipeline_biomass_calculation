@@ -45,7 +45,8 @@ def exec_cloud_run_job(task_id, job_name):
         job_name=f"cr-juridico-{job_name}-dev",
         region='us-central1',
         project_id=project_id,
-        deferrable=True
+        deferrable=True,
+        pool="cloud_run_pool",
     )
 
 with DAG(
@@ -54,6 +55,7 @@ with DAG(
     description='Biomass Calculation DAG',
     schedule_interval='@monthly',
     catchup=False,
+    max_active_tasks=2,
 ) as dag:
 
     # TaskGroup for ETL: Total Sales
