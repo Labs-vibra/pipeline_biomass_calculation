@@ -49,7 +49,7 @@ upload-infra: configure-docker-gcp up-first-part upload-docker
 
 upload-data-to-gcs:
 	gsutil cp -r src/notebooks/*.ipynb gs://$(BUCKET_NAME)/notebooks/
-	gsutil cp -r src/db/xqueries/* gs://$(BUCKET_NAME)/sql/
+	gsutil cp -r src/db/queries/* gs://$(BUCKET_NAME)/sql/
 	gsutil cp -r src/db/schemas/* gs://$(BUCKET_NAME)/sql/schemas/
 
 upload-dags:

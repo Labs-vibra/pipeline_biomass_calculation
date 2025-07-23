@@ -60,7 +60,7 @@ def exec_cloud_run_job(task_id, job_name):
     )
 
 with DAG(
-    dag_id='biomass_calculation_dag',
+    dag_id='biomass_calculation_dag_2023',
     default_args=default_args,
     description='Biomass Calculation DAG',
     schedule_interval='@monthly',
