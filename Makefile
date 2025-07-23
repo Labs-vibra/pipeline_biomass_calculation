@@ -12,6 +12,8 @@ build-docker-dev:
 run-docker-dev:
 	docker run \
 	-e NOTEBOOK_TO_BE_EXECUTED="./notebooks/rw_ext_anp_total_sales.ipynb" \
+	-e START_DATE="2023-01-01" \
+	-e END_DATE="2023-12-31" \
 	run-notebook-api-dev
 
 gcp-login:
