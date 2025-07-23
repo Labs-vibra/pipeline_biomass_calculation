@@ -24,6 +24,7 @@ USING (
     )
     AND data_venda >= '{{params.start_date}}'
     AND data_venda <= '{{params.end_date}}'
+    AND data_criacao = (SELECT MAX(data_criacao) FROM rw_ext_anp.venda_total)
     GROUP BY
     data_venda,
     agente_regulado,

@@ -6,9 +6,10 @@ MERGE INTO `td_ext_anp.venda_b100` AS t
       razao_social_distribuidor AS vb100_txt_razao_social,
       qtd_de_produto_m3 / 1000 AS vb100_qtd_volume_1000m3,
       razao_social_produtor AS vb100_nom_produtor,
-      cnpj_produtor AS vb100_num_produtor_cnpj,
+      cnpj_produtor AS vb100_num_produtor_cnpj
       FROM rw_ext_anp.venda_b100
-      WHERE data_compra BETWEEN '2023-01-01' AND '2025-12-31'
+      WHERE data_compra BETWEEN '{{params.start_date}}' AND '{{params.end_date}}'
+      AND data_criacao = (SELECT MAX(data_criacao) FROM rw_ext_anp.venda_b100)
   ) AS s
   ON
     t.vb100_dat_compra = s.vb100_dat_compra AND
