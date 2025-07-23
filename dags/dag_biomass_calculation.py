@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.utils.dates import days_ago
+from airflow.utils.task_group import TaskGroup
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from airflow.providers.google.cloud.operators.cloud_run import CloudRunExecuteJobOperator
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
@@ -36,7 +37,6 @@ def populate_table(table, sql_name):
         },
         params=params_dag,
         location="US"
-
     )
 
 def exec_cloud_run_job(task_id, job_name):
@@ -45,7 +45,7 @@ def exec_cloud_run_job(task_id, job_name):
         job_name=f"cr-juridico-{job_name}-dev",
         region='us-central1',
         project_id=project_id,
-        deferrable=False
+        deferrable=True
     )
 
 with DAG(
@@ -56,53 +56,59 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    rw_total_sales = exec_cloud_run_job(
-        task_id="total_sales",
-        job_name="etl-venda-total",
-    )
+    # TaskGroup for ETL: Total Sales
+    with TaskGroup("etl_total_sales", tooltip="ETL Total Sales") as etl_total_sales:
+        run_total = exec_cloud_run_job(
+            task_id="total_sales",
+            job_name="etl-venda-total"
+        )
+        pop_total = populate_table(
+            table="td_total_sales",
+            sql_name=f"gs://{bucket}/sql/trusted/dml_total_sales.sql"
+        )
+        run_total >> pop_total
 
-    rw_b100_sales = exec_cloud_run_job(
-        task_id="b100_sales",
-        job_name="etl-venda-b100",
-    )
+    # TaskGroup for ETL: B100 Sales
+    with TaskGroup("etl_b100_sales", tooltip="ETL B100 Sales") as etl_b100_sales:
+        run_b100 = exec_cloud_run_job(
+            task_id="b100_sales",
+            job_name="etl-venda-b100"
+        )
+        pop_b100 = populate_table(
+            table="td_b100_sales",
+            sql_name=f"gs://{bucket}/sql/trusted/dml_b100_sales.sql"
+        )
+        run_b100 >> pop_b100
 
-    rw_congeneres_sales = exec_cloud_run_job(
-        task_id="congeneres_sales",
-        job_name="etl-venda-congeneres",
-    )
+    # TaskGroup for ETL: Congeneres Sales
+    with TaskGroup("etl_congeneres_sales", tooltip="ETL Congeneres Sales") as etl_congeneres_sales:
+        run_congeneres = exec_cloud_run_job(
+            task_id="congeneres_sales",
+            job_name="etl-venda-congeneres"
+        )
+        pop_congeneres = populate_table(
+            table="td_congeneres_sales",
+            sql_name=f"gs://{bucket}/sql/trusted/dml_congeneres_sales.sql"
+        )
+        run_congeneres >> pop_congeneres
 
-    rw_dados_agentes = exec_cloud_run_job(
-        task_id="dados_agentes",
-        job_name="etl-agentes-regulados-simp",
-    )
+    # TaskGroup for ETL: Dados Agentes
+    with TaskGroup("etl_dados_agentes", tooltip="ETL Dados Agentes") as etl_dados_agentes:
+        run_dados = exec_cloud_run_job(
+            task_id="dados_agentes",
+            job_name="etl-agentes-regulados-simp"
+        )
+        pop_dados = populate_table(
+            table="td_dados_agentes",
+            sql_name=f"gs://{bucket}/sql/trusted/dml_dados_agentes.sql"
+        )
+        run_dados >> pop_dados
 
-    td_dados_agentes = populate_table(
-        table="td_dados_agentes",
-        sql_name=f'gs://{bucket}/sql/trusted/dml_dados_agentes.sql'
-    )
-
-    td_total_sales = populate_table(
-        table="td_total_sales",
-        sql_name=f'gs://{bucket}/sql/trusted/dml_total_sales.sql'
-    )
-
-    td_b100_sales = populate_table(
-        table="td_b100_sales",
-        sql_name=f'gs://{bucket}/sql/trusted/dml_b100_sales.sql'
-    )
-
-    td_congeneres_sales = populate_table(
-        table="td_congeneres_sales",
-        sql_name=f'gs://{bucket}/sql/trusted/dml_congeneres_sales.sql'
-    )
-
-    rf_biomass_calculation = populate_table(
+    # Refined layer: Execute after all raw ETLs are complete
+    refined_biomass = populate_table(
         table="rf_biomass_calculation",
-        sql_name=f'gs://{bucket}/sql/refined/dml_biomass_calculation.sql'
+        sql_name=f"gs://{bucket}/sql/refined/dml_biomass_calculation.sql"
     )
 
-    rw_total_sales >> td_total_sales
-    rw_b100_sales >> td_b100_sales
-    rw_congeneres_sales >> td_congeneres_sales
-    rw_dados_agentes >> td_dados_agentes
-    [td_total_sales, td_b100_sales, td_congeneres_sales] >> td_dados_agentes >> rf_biomass_calculation
+    # Establish overall dependency: run ETL taskgroups sequentially
+    [etl_total_sales, etl_b100_sales, etl_congeneres_sales, etl_dados_agentes] >> refined_biomass
