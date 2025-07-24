@@ -9,3 +9,5 @@ gcp.secrets.json
 
 # Terraform
 terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
