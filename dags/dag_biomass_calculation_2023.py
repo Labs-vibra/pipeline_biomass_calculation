@@ -17,8 +17,8 @@ bucket = os.getenv("BUCKET_NAME", "vibra-dtan-juridico-anp-input")
 project_id = os.getenv("GOOGLE_CLOUD_PROJECT", "labs-vibra-final")
 
 params_dag = {
-    'start_date': (dt.datetime.now() - dt.timedelta(days=90)).strftime('%Y-%m-%d'),
-    'end_date': dt.datetime.now().strftime('%Y-%m-%d'),
+    'start_date': '2023-01-01',
+    'end_date': '2023-12-31',
 }
 
 def get_sql_content(sql_path):
@@ -60,7 +60,7 @@ def exec_cloud_run_job(task_id, job_name):
     )
 
 with DAG(
-    dag_id='biomass_calculation_dag',
+    dag_id='biomass_calculation_dag_2023',
     default_args=default_args,
     description='Biomass Calculation DAG',
     schedule_interval='@monthly',

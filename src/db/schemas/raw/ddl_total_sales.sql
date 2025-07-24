@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS rw_ext_anp.venda_total (
     data_venda DATE,
-    veto_txt_razao_social STRING,
+    agente_regulado STRING,
     quantidade_de_produto_mil_m3 FLOAT64,
     descricao_do_produto STRING,
     regiao_origem STRING,

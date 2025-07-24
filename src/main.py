@@ -6,9 +6,19 @@ notebook_params = {
     'start_date': (datetime.datetime.now() - datetime.timedelta(days=120)).strftime('%Y-%m-%d'),
     'end_date': datetime.datetime.now().strftime('%Y-%m-%d'),
 }
+
+if 'START_DATE' in os.environ:
+    notebook_params['start_date'] = os.environ['START_DATE']
+if 'END_DATE' in os.environ:
+    notebook_params['end_date'] = os.environ['END_DATE']
+
 if notebook_params['start_date'][:4] != notebook_params['end_date'][:4]:
     notebook_params['start_date'] = f"{notebook_params['end_date'][:4]}-01-01"
     notebook_params['end_date'] = f"{notebook_params['end_date'][:4]}-{notebook_params['end_date'][5:7]}-{notebook_params['end_date'][8:10]}"
+
+print("running notebook with parameters:")
+print("start_date:", notebook_params['start_date'])
+print("end_date:", notebook_params['end_date'])
 
 notebook_gcs_uri = os.getenv("NOTEBOOK_TO_BE_EXECUTED")
 notebook_name = notebook_gcs_uri.split("/")[-1] if notebook_gcs_uri else os.getenv("NOTEBOOK_OUTPUT_GCS_URL")

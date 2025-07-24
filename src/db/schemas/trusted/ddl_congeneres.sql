@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS td_ext_anp.venda_congeneres (
     veco_nom_comprador STRING,
     veco_qtd_volume_1000m3 FLOAT64,
     veco_dat_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
-) PARTITION BY veco_dat_criacao;
+) PARTITION BY DATE(veco_dat_criacao);
