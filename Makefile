@@ -40,7 +40,7 @@ install-requirements:
 
 up-first-part:
 	cd terraform; \
-	terraform apply -target=google_artifact_registry_repository.anp_repo_etl -auto-approve
+		terraform apply -target=google_artifact_registry_repository.anp_repo_etl -auto-approve; \
 	terraform apply -target=google_storage_bucket.anp_bucket_etl -auto-approve
 
 upload-infra: configure-docker-gcp up-first-part upload-docker
