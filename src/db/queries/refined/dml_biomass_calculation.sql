@@ -187,7 +187,8 @@ FROM
 JOIN
     necessidade_teorica_b100 ntb ON clb.dat = ntb.dat 
         AND clb.razao_social = ntb.razao_social 
-        AND clb.agnt_num_base_cnpj = ntb.agnt_num_base_cnpj
+        AND (clb.agnt_num_base_cnpj = ntb.agnt_num_base_cnpj 
+         OR (clb.agnt_num_base_cnpj IS NULL AND ntb.agnt_num_base_cnpj IS NULL))
 ) AS source
 ON target.cabi_dat_calculo = source.cabi_dat_calculo 
    AND target.cabi_txt_razao_social = source.cabi_txt_razao_social
