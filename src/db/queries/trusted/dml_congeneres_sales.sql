@@ -13,7 +13,8 @@ FROM
 WHERE
     LOWER(produto) LIKE '%diesel b%'
     AND periodo BETWEEN '{{params.start_date}}' AND '{{params.end_date}}'
-    AND data_criacao = (SELECT MAX(data_criacao) FROM rw_ext_anp.venda_congeneres)
+    AND data_criacao = (SELECT MAX(data_criacao) FROM rw_ext_anp.venda_congeneres
+                        WHERE periodo BETWEEN '{{params.start_date}}' AND '{{params.end_date}}')
 ) AS source
 ON source.veco_dat_venda = target.veco_dat_venda
 AND source.veco_txt_produto = target.veco_nom_produto

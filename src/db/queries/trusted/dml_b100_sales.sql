@@ -9,7 +9,9 @@ MERGE INTO `td_ext_anp.venda_b100` AS t
       cnpj_produtor AS vb100_num_produtor_cnpj
       FROM rw_ext_anp.venda_b100
       WHERE data_compra BETWEEN '{{params.start_date}}' AND '{{params.end_date}}'
-      AND data_criacao = (SELECT MAX(data_criacao) FROM rw_ext_anp.venda_b100)
+      AND data_criacao = (SELECT MAX(data_criacao)
+                    FROM rw_ext_anp.venda_b100
+                    WHERE data_compra BETWEEN '{{params.start_date}}' AND '{{params.end_date}}')
   ) AS s
   ON
     t.vb100_dat_compra = s.vb100_dat_compra AND
